@@ -3,12 +3,14 @@ import nodemailer from "nodemailer";
 
 export const sendAccountCreatedEmail = async (email, fullName) => {
   const transporter = nodemailer.createTransport({
-    service: "gmail", // or "Yahoo", or use host + port if using SMTP
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
   const mailOptions = {
     from: `"Your App Name" <${process.env.SMTP_USER}>`,
