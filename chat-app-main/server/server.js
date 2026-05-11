@@ -13,7 +13,10 @@ const server = http.createServer(app);
 
 // Initialise Socket.IO server
 export const io = new Server(server, {
-  cors: {origin: '*', },
+  cors: {
+    origin: "https://chat-app-ruddy-tau-67.vercel.app",
+    credentials: true,
+  },
 });
 
 // store online users
@@ -39,7 +42,10 @@ io.on('connection', (socket) => {
 
 // middleware setup
 app.use(express.json({limit: '4mb'}));
-app.use(cors());
+app.use(cors({
+  origin: "https://chat-app-ruddy-tau-67.vercel.app",
+  credentials: true,
+}));
 
 // routes setup
 app.use("/api/status", (req, res) => {
@@ -52,14 +58,14 @@ app.use("/api/messages",messageRouter)
 await connectDB();
 
 
-if(process.env.NODE_ENV !=="production"){
 
-    const PORT = process.env.PORT || 5000;
+
+const PORT = process.env.PORT || 5000;
     // start the server
-    server.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-}
+  server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+
 
 
 // Export server for Vercel
