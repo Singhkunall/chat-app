@@ -11,31 +11,34 @@ import { Server } from 'socket.io';
 const app = express();
 const server = http.createServer(app);
 
+const allowedOrigins = [
+  "https://chat-app-ruddy-tau-67.vercel.app",
+  /https:\/\/chat-app.*\.vercel\.app$/,
+];
+
 // Initialise Socket.IO server
 export const io = new Server(server, {
   cors: {
-    origin: "https://chat-app-ruddy-tau-67.vercel.app",
+    origin: allowedOrigins,
     credentials: true,
   },
 });
 
 // store online users
-export const userSocketMap = {}; // { userId: socketId }
+export const userSocketMap = {};
 
 // handle socket connections
 io.on('connection', (socket) => {
-    const userId = socket.handshake.query.userId; // get userId from query params
+    const userId = socket.handshake.query.userId;
     console.log('User connected:', userId);
     if(userId) {
-        userSocketMap[userId] = socket.id; // store the socket id for the user
+        userSocketMap[userId] = socket.id;
     }
-    // emit online users to all clients
     io.emit('getOnlineUsers', Object.keys(userSocketMap));
 
     socket.on('disconnect', () => {
         console.log('User disconnected:', userId);
-        delete userSocketMap[userId]; // remove the socket id for the user
-        // emit online users to all clients
+        delete userSocketMap[userId];
         io.emit('getOnlineUsers', Object.keys(userSocketMap));
     });
 });
@@ -43,7 +46,7 @@ io.on('connection', (socket) => {
 // middleware setup
 app.use(express.json({limit: '4mb'}));
 app.use(cors({
-  origin: "https://chat-app-ruddy-tau-67.vercel.app",
+  origin: allowedOrigins,
   credentials: true,
 }));
 
@@ -52,21 +55,15 @@ app.use("/api/status", (req, res) => {
   res.send("server is running");
 });
 
-app.use("/api/auth",userRouter);
-app.use("/api/messages",messageRouter)
+app.use("/api/auth", userRouter);
+app.use("/api/messages", messageRouter);
+
 // connect to database
 await connectDB();
 
-
-
-
 const PORT = process.env.PORT || 5000;
-    // start the server
-  server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
-
-
-// Export server for Vercel
 export default server;
