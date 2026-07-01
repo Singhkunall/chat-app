@@ -6,7 +6,8 @@ import { connectDB } from './lib/db.js';
 import userRouter from './routes/userRouts.js';
 import messageRouter from './routes/messageRoutes.js';
 import { Server } from 'socket.io';
-
+import sosRouter from './routes/sosRoutes.js';
+import trustedContactRouter from './routes/trustedContactRoutes.js';
 // create an express app and HTTP server  
 const app = express();
 const server = http.createServer(app);
@@ -57,6 +58,9 @@ app.use("/api/status", (req, res) => {
 
 app.use("/api/auth", userRouter);
 app.use("/api/messages", messageRouter);
+
+app.use("/api/sos", sosRouter);
+app.use("/api/trusted-contacts", trustedContactRouter);
 
 // connect to database
 await connectDB();
