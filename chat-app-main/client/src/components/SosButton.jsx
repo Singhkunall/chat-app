@@ -45,9 +45,9 @@ const SosButton = () => {
     <button
       onClick={handleSOS}
       disabled={sending}
-      className='fixed bottom-6 right-6 z-50 bg-red-600 hover:bg-red-700 text-white font-medium text-sm px-5 py-3 rounded-full shadow-lg cursor-pointer flex items-center gap-2'
+      className='fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 bg-red-600 hover:bg-red-700 text-white font-medium text-xs sm:text-sm px-4 sm:px-5 py-2.5 sm:py-3 rounded-full shadow-lg cursor-pointer flex items-center gap-1.5 sm:gap-2'
     >
-      🚨 {sending ? "Sending..." : "SOS"}
+      🚨 {sending ? "..." : "SOS"}
     </button>
   )
 }
