@@ -11,6 +11,7 @@ const SideBar = () => {
     const [input, setInput] = useState('')
     const [showSearch, setShowSearch] = useState(false)
     const [showQr, setShowQr] = useState(false)
+    const [showMenu, setShowMenu] = useState(false)
 
     const navigate = useNavigate();
     const filteredUsers = input ? users.filter((user) => user.fullName.toLowerCase().includes(input.toLowerCase())) : users;
@@ -33,15 +34,25 @@ const SideBar = () => {
                             className='text-white text-base sm:text-lg cursor-pointer p-1.5 rounded-full hover:bg-white/10 hover:text-violet-400'
                             title="QR Connect"
                         >▢</span>
-                        <div className='relative py-2 group'>
-                            <img src={assets.menu_icon} alt="menu" className='max-h-5 cursor-pointer' />
-                            <div className='absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] hidden group-hover:block border border-gray-600 text-gray-100'>
-                                <p onClick={() => navigate('/profile')} className='cursor-pointer text-sm'>Edit Profile</p>
-                                <hr className='my-2 border-t border-gray-500 ' />
-                                <p onClick={() => navigate('/trusted-contacts')} className='cursor-pointer text-sm'>Trusted Contacts</p>
-                                <hr className='my-2 border-t border-gray-500 ' />
-                                <p className='cursor-pointer text-sm' onClick={() => logout()}>Logout</p>
-                            </div>
+                        <div className='relative py-2'>
+                            <img
+                                onClick={() => setShowMenu(!showMenu)}
+                                src={assets.menu_icon}
+                                alt="menu"
+                                className='max-h-5 cursor-pointer'
+                            />
+                            {showMenu && (
+                                <>
+                                    <div className='fixed inset-0 z-10' onClick={() => setShowMenu(false)}></div>
+                                    <div className='absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] border border-gray-600 text-gray-100'>
+                                        <p onClick={() => { navigate('/profile'); setShowMenu(false) }} className='cursor-pointer text-sm'>Edit Profile</p>
+                                        <hr className='my-2 border-t border-gray-500 ' />
+                                        <p onClick={() => { navigate('/trusted-contacts'); setShowMenu(false) }} className='cursor-pointer text-sm'>Trusted Contacts</p>
+                                        <hr className='my-2 border-t border-gray-500 ' />
+                                        <p className='cursor-pointer text-sm' onClick={() => { logout(); setShowMenu(false) }}>Logout</p>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
