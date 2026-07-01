@@ -7,6 +7,7 @@ import TrustedContactsPage from './pages/TrustedContactsPage'
 import SosButton from './components/SosButton'
 import {Toaster} from "react-hot-toast"
 import { AuthContext } from '../contex/AuthContex'
+import ConnectPage from './pages/ConnectPage'
 function App() {
   const{authUser} = React.useContext(AuthContext);
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
         <Route path="/trusted-contacts" element={authUser ? <TrustedContactsPage /> : <Navigate to="/login" />} />
+        <Route path="/connect/:username" element={<ConnectPage />} />
       </Routes>
 
     </div>

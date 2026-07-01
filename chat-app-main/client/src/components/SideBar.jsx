@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../contex/AuthContex'
 import { ChatContext } from '../../contex/ChatContext'
 import UserSearch from './UserSearch'
+import QrConnect from './QrConnect'
 const SideBar = () => {
     const { getUsers, users, selectedUser, setSelectedUser, unseenMessages, setUnseenMessages } = useContext(ChatContext);
     const { logout, onlineUsers } = useContext(AuthContext)
     const [input, setInput] = useState('')
     const [showSearch, setShowSearch] = useState(false)
+    const [showQr, setShowQr] = useState(false)
 
     const navigate = useNavigate();
     const filteredUsers = input ? users.filter((user) => user.fullName.toLowerCase().includes(input.toLowerCase())) : users;
@@ -20,19 +22,26 @@ const SideBar = () => {
             <div className='pb-5'>
                 <div className='flex items-center justify-between'>
                     <img src={assets.logo} alt="logo" className='max-w-40' />
-                    <span
-                        onClick={() => setShowSearch(true)}
-                        className='text-white text-2xl cursor-pointer px-2 hover:text-violet-400'
-                        title="Find people"
-                    >+</span>
-                    <div className='relative py-2 group '>
-                        <img src={assets.menu_icon} alt="menu" className='max-h-5 cursor-pointer' />
-                        <div className='absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] hidden group-hover:block border border-gray-600 text-gray-100'>
-                            <p onClick={() => navigate('/profile')} className='cursor-pointer text-sm'>Edit Profile</p>
-                            <hr className='my-2 border-t border-gray-500 ' />
-                            <p onClick={() => navigate('/trusted-contacts')} className='cursor-pointer text-sm'>Trusted Contacts</p>
-                            <hr className='my-2 border-t border-gray-500 ' />
-                            <p className='cursor-pointer text-sm' onClick={() => logout()}>Logout</p>
+                    <div className='flex items-center gap-1'>
+                        <span
+                            onClick={() => setShowSearch(true)}
+                            className='text-white text-2xl cursor-pointer px-2 hover:text-violet-400'
+                            title="Find people"
+                        >+</span>
+                        <span
+                            onClick={() => setShowQr(true)}
+                            className='text-white text-lg cursor-pointer px-2 hover:text-violet-400'
+                            title="QR Connect"
+                        >▢</span>
+                        <div className='relative py-2 group '>
+                            <img src={assets.menu_icon} alt="menu" className='max-h-5 cursor-pointer' />
+                            <div className='absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] hidden group-hover:block border border-gray-600 text-gray-100'>
+                                <p onClick={() => navigate('/profile')} className='cursor-pointer text-sm'>Edit Profile</p>
+                                <hr className='my-2 border-t border-gray-500 ' />
+                                <p onClick={() => navigate('/trusted-contacts')} className='cursor-pointer text-sm'>Trusted Contacts</p>
+                                <hr className='my-2 border-t border-gray-500 ' />
+                                <p className='cursor-pointer text-sm' onClick={() => logout()}>Logout</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,11 +67,12 @@ const SideBar = () => {
                             }
                         </div>
                         {unseenMessages?.[user._id] > 0 && <p className='absolute right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-violet-500/50 '>{unseenMessages[user._id]}</p>}
-                        
+
                     </div>
                 ))}
             </div>
             {showSearch && <UserSearch onClose={() => setShowSearch(false)} />}
+            {showQr && <QrConnect onClose={() => setShowQr(false)} />}
         </div>
     )
 }
