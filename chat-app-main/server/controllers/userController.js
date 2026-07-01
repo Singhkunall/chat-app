@@ -20,11 +20,21 @@ export const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // generate a base username from fullName, ensure uniqueness by appending numbers if needed
+    let baseUsername = fullName.toLowerCase().replace(/[^a-z0-9]/g, "");
+    let username = baseUsername;
+    let counter = 1;
+    while (await User.findOne({ username })) {
+      username = `${baseUsername}${counter}`;
+      counter++;
+    }
+
     const newUser = await User.create({
       fullName,
       email,
       password: hashedPassword,
       bio,
+      username,
       isVerified: true,
     });
 
@@ -36,7 +46,6 @@ export const signup = async (req, res) => {
       userData: newUser,
       message: "Account created successfully!",
     });
-
   } catch (error) {
     console.error(error.message);
     res.json({ success: false, message: error.message });
@@ -72,7 +81,6 @@ export const login = async (req, res) => {
       token,
       message: "logged in successfully",
     });
-
   } catch (error) {
     console.log(error.message);
     res.json({
@@ -80,12 +88,12 @@ export const login = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
 
 // controller to check if user is authenticated
 export const checkAuth = async (req, res) => {
   res.json({ success: true, user: req.user });
-}
+};
 
 // controller to update user profile
 export const updateProfile = async (req, res) => {
@@ -95,22 +103,30 @@ export const updateProfile = async (req, res) => {
     let updatedUser;
 
     if (!profilePic) {
-      updatedUser = await User.findByIdAndUpdate(userId, {
-        fullName,
-        bio
-      }, { new: true });
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          fullName,
+          bio,
+        },
+        { new: true },
+      );
     } else {
       const upload = await cloudinary.uploader.upload(profilePic);
-      updatedUser = await User.findByIdAndUpdate(userId, {
-        fullName,
-        bio,
-        profilePic: upload.secure_url
-      }, { new: true });
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          fullName,
+          bio,
+          profilePic: upload.secure_url,
+        },
+        { new: true },
+      );
     }
 
     res.json({
       success: true,
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (error) {
     console.log(error.message);
@@ -119,4 +135,4 @@ export const updateProfile = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
