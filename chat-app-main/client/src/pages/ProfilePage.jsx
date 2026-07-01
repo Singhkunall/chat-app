@@ -35,6 +35,7 @@ const ProfilePage = () => {
             Upload profile picture
           </label>
           <input type="text" required placeholder='Your Name' value={name} onChange={(e) => setName(e.target.value)} className='rounded-md border border-gray-500 p-2 focus:outline-none focus:ring-2 focus:ring-violet-500' />
+          <p className='text-xs text-gray-400'>@{authUser.username}</p>
           <textarea required placeholder='Bio' value={bio} onChange={(e) => setBio(e.target.value)} className='rounded-md border border-gray-500 p-2 focus:outline-none focus:ring-2 focus:ring-violet-500'rows={4} />
           <button type='submit' className='p-2 bg-gradient-to-r from-purple-400 to-violet-600 text-white text-lg rounded-full cursor-pointer'>
             Save
