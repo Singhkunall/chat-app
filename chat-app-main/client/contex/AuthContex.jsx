@@ -1,4 +1,4 @@
-import { createContext ,useEffect,useState} from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
                 setAuthUser(data.user);
                 connectSocket(data.user);
             }
-            
+
         } catch (error) {
             toast.error(error.message)
         }
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
 
     //login function to handle user authentication and socket connection
-    const login = async (state, credentials)=>{
+    const login = async (state, credentials) => {
         try {
             const { data } = await axios.post(`/api/auth/${state}`, credentials);
             if (data.success) {
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
                 setToken(data.token);
                 localStorage.setItem('token', data.token);
                 toast.success(data.message);
-            }else{
+            } else {
                 toast.error(data.message);
             }
         } catch (error) {
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
             if (data.success) {
                 setAuthUser(data.user);
                 toast.success("Profile updated successfully");
-            } 
+            }
         } catch (error) {
             toast.error(error.message);
         }
@@ -84,30 +84,33 @@ export const AuthProvider = ({ children }) => {
         newSocket.on("getOnlineUsers", (userIds) => {
             setOnlineUsers(userIds);
         });
+        newSocket.on("sosAlert", (alert) => {
+            toast.error(`🚨 ${alert.senderName} triggered an SOS alert!`, { duration: 8000 });
+        });
 
     }
-    
+
     useEffect(() => {
-    const init = async () => {
-        if (token) {
-        axios.defaults.headers.common['token'] = token;
-        await checkAuth(); // ✅ await checkAuth
-        }
-    };
-    init();
+        const init = async () => {
+            if (token) {
+                axios.defaults.headers.common['token'] = token;
+                await checkAuth(); // ✅ await checkAuth
+            }
+        };
+        init();
     }, []);
-  const value = {
-    axios,
-    authUser,
-    onlineUsers,
-    socket,
-    login,
-    logout,
-    updateProfile
-  }
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+    const value = {
+        axios,
+        authUser,
+        onlineUsers,
+        socket,
+        login,
+        logout,
+        updateProfile
+    }
+    return (
+        <AuthContext.Provider value={value}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
