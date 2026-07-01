@@ -20,20 +20,20 @@ const SideBar = () => {
     return (
         <div className={`bg-[#8185B2]/10 h-full p-5  rounded-r-xl text-white overflow-y-scroll ${selectedUser ? ' max-md:hidden' : ''}`}>
             <div className='pb-5'>
-                <div className='flex items-center justify-between'>
-                    <img src={assets.logo} alt="logo" className='max-w-40' />
-                    <div className='flex items-center gap-1'>
+                <div className='flex items-center justify-between gap-2'>
+                    <img src={assets.logo} alt="logo" className='max-w-28 sm:max-w-40' />
+                    <div className='flex items-center gap-1 sm:gap-2'>
                         <span
                             onClick={() => setShowSearch(true)}
-                            className='text-white text-2xl cursor-pointer px-2 hover:text-violet-400'
+                            className='text-white text-xl sm:text-2xl cursor-pointer p-1.5 rounded-full hover:bg-white/10 hover:text-violet-400'
                             title="Find people"
                         >+</span>
                         <span
                             onClick={() => setShowQr(true)}
-                            className='text-white text-lg cursor-pointer px-2 hover:text-violet-400'
+                            className='text-white text-base sm:text-lg cursor-pointer p-1.5 rounded-full hover:bg-white/10 hover:text-violet-400'
                             title="QR Connect"
                         >▢</span>
-                        <div className='relative py-2 group '>
+                        <div className='relative py-2 group'>
                             <img src={assets.menu_icon} alt="menu" className='max-h-5 cursor-pointer' />
                             <div className='absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] hidden group-hover:block border border-gray-600 text-gray-100'>
                                 <p onClick={() => navigate('/profile')} className='cursor-pointer text-sm'>Edit Profile</p>

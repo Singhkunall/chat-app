@@ -40,7 +40,7 @@ const UserSearch = ({ onClose }) => {
     <div className='fixed inset-0 bg-black/50 flex items-start justify-center pt-20 z-50' onClick={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
-        className='bg-[#1a1a2e] border border-gray-600 rounded-lg w-full max-w-md p-5 flex flex-col gap-4'
+        className='bg-[#1a1a2e] border border-gray-600 rounded-lg w-[90%] sm:w-full max-w-md p-5 flex flex-col gap-4 mx-auto'
       >
         <div className='flex items-center justify-between'>
           <h3 className='text-white text-lg font-medium'>Find People</h3>
