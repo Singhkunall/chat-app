@@ -1,4 +1,4 @@
-# QuickChat 💬
+# PulseChat 💬
 
 A full-stack real-time chat application built with the MERN stack, featuring instant messaging, image sharing, and an emergency SOS safety feature that sets it apart from a typical chat app.
 
@@ -8,7 +8,7 @@ A full-stack real-time chat application built with the MERN stack, featuring ins
 
 ## Why this project is different
 
-Most chat app clones stop at "send and receive messages." QuickChat adds a **safety layer** on top of real-time chat — because a messaging app can do more than just message people.
+Most chat app clones stop at "send and receive messages." PulseChat adds a **safety layer** on top of real-time chat — because a messaging app can do more than just message people.
 
 If a user feels unsafe or is in an emergency, they can tap a single SOS button. Their live location is instantly sent to their trusted contacts — through a real-time notification if the contact is online, and through an automated email (with a direct Google Maps link) so the alert reaches them even if they're not using the app at that moment.
 
